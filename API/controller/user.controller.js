@@ -1,3 +1,6 @@
-module.exports.user=(req,res)=>{
-    res.send("this api is woriking")
+const { default: User } = require("../model/user.model");
+
+module.exports.user=async(req,res)=>{
+   
+
 }
