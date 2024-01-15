@@ -36,7 +36,6 @@ const Signup = () => {
            }
         
     } catch (error) {
-        
         console.log("info unable send check api ")
     }
   };
