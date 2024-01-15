@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 module.exports.signup = async (req, res) => {
     const { username, email, password } = req.body;
 
+
     // Hash the password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -13,7 +14,7 @@ module.exports.signup = async (req, res) => {
     try {
         // Save the new user
         await newUser.save();
-        res.status(201).json("User created successfully!");
+       return res.status(201).json({ success: "User created successfully!" });
     } catch (error) {
         res.status(500).json(error.message);
     }
