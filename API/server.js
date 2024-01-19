@@ -10,7 +10,7 @@ app.use(express.json())
 app.use('/api/user', userrouter);
 app.use('/api/auth',authrouter)
 app.get('/',(req,res)=>{
-    res.send("ready");
+    res.send("abhijeet");
 })
 app.listen(port,()=>{
     console.log(`server running at ${port}`)
