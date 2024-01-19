@@ -15,8 +15,6 @@ const Profile = () => {
   const [fileperc, setFileperc] = useState(0);
   const [fileuploaderror, setFileuploaderror] = useState(false);
   const [formdata, setFormdata] = useState({});
-  console.log(fileperc);
-  console.log(file);
   const { currentUser } = useSelector((state) => state.user);
 
   useEffect(() => {
@@ -32,15 +30,16 @@ const Profile = () => {
     uploadtask.on("state_changed", (snapshot) => {
       const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
       setFileperc(Math.round(progress));
-    });
+    },
     (error) => {
       setFileuploaderror(true);
-    };
+    },
     () => {
       getDownloadURL(uploadtask.snapshot.ref).then((downloadUrl) => {
         setFormdata({ ...formdata, avatar: downloadUrl });
       });
-    };
+    }
+    )
   };
   // firebase storage rule
   //  allow read;
@@ -59,14 +58,16 @@ const Profile = () => {
           onChange={(e) => setFile(e.target.files[0])}
         />
         <img
-          src={currentUser.avatar}
+          src={formdata.avatar || currentUser.avatar}
           alt="profilepic"
           className="rounded-full h-24 w-24 object-cover cursor-pointer self-center mt-2"
           onClick={() => fileref.current.click()}
         />
         <p className="text-sm self-center">
           {fileuploaderror ? (
-            <span className="text-red-700">Error in file upload</span>
+            <span className="text-red-700">
+              Error in file upload(image must be less than 2mb)
+            </span>
           ) : fileperc > 0 && fileperc < 100 ? (
             <span className="text-slate-700">{`uploading ${fileperc}%`}</span>
           ) : fileperc === 100 ? (
