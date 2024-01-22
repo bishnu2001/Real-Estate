@@ -1,15 +1,21 @@
 const jwt = require('jsonwebtoken');
-const verifyToken=(req,res,next)=>{
+
+const verifyToken = (req, res, next) => {
     const token = req.cookies.access_token;
+
     if (!token) {
-        res.status(401).json({ error: "Unauthorized" })
+        return res.status(401).json({ error: "Unauthorized" });
     }
+
     jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
         if (err) {
-            res.status(403).json({ err: "Forbidden" })
+            return res.status(403).json({ error: "Forbidden" });
         }
+
+        // If verification is successful, attach the user to the request object
         req.user = user;
-        next();
-    })
-}
+        next(); // Continue to the next middleware or route handler
+    });
+};
+
 module.exports = { verifyToken };
