@@ -1,6 +1,7 @@
 const express=require('express');
-const { user }=require('../controller/user.controller')
+const { updateuser }=require('../controller/user.controller');
+const { verifyToken }=require('../utils/verifyuser');
 
 const router=express.Router();
-router.get('/test', user)
+router.post('/update/:id',verifyToken,updateuser);
 module.exports=router;
