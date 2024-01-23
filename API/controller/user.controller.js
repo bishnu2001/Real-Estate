@@ -27,3 +27,15 @@ module.exports.updateuser = async (req, res) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
+module.exports.deleteuser=async(req,res)=>{
+   if(req.user.id !==req.params.id){
+    return res.status(401).json({error:"you can delete only your account"})
+   }
+   try {
+    await User.findByIdAndDelete(req.params.id);
+    res.clearCookie('access_token')
+    res.status(201).json({message:"user successfully deleted"})
+   } catch (error) {
+       return res.status(500).json({ error: "Internal server error" });
+   }
+}
