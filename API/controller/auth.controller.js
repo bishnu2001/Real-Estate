@@ -57,4 +57,11 @@ module.exports.google = async (req, res) => {
         console.log(error)
     }
 }
-
+module.exports.signout=async(req,res)=>{
+      try {
+        res.clearCookie('access_token');
+        res.status(200).json({message:'user has been deleted'})
+      } catch (error) {
+        res.status(500).json({error:"internal server Error"})
+      }
+}

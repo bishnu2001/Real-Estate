@@ -15,6 +15,9 @@ import {
   deleteUserstart,
   deleteUserfailure,
   deleteuserSuccess,
+  SignoutUserstart,
+  SignoutUserfailure,
+  SignoutuserSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -25,8 +28,8 @@ const Profile = () => {
   const [fileuploaderror, setFileuploaderror] = useState(false);
   const [formdata, setFormdata] = useState({});
   const [updatesuccess, setUpdatesuccess] = useState(false);
-  const { currentUser,loading,error } = useSelector((state) => state.user);
-  const dispatch=useDispatch();
+  const { currentUser, loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   useEffect(() => {
     if (file) {
       FileUpload(file);
@@ -81,27 +84,40 @@ const Profile = () => {
         return;
       }
       dispatch(updateUserSuccess(data));
-      setUpdatesuccess(true)
+      setUpdatesuccess(true);
     } catch (error) {
       dispatch(updateUserfailure(error));
     }
   };
-const handledeleteuser=async()=>{
-try {
-  dispatch(deleteUserstart());
-  const res = await fetch(`/api/user/delete/${currentUser._id}`,{
-    method:"DELETE"
-  });
-  const data=await res.json();
-  if(data.success==false){
-    dispatch(deleteUserfailure(data));
-    return;
-  }
-  dispatch(deleteuserSuccess(data))
-} catch (error) {
-  
-}
-}
+  const handledeleteuser = async () => {
+    try {
+      dispatch(deleteUserstart());
+      const res = await fetch(`/api/user/delete/${currentUser._id}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success == false) {
+        dispatch(deleteUserfailure(data));
+        return;
+      }
+      dispatch(deleteuserSuccess(data));
+    } catch (error) {}
+  };
+  const signoutuser = async () => {
+    try {
+      dispatch(SignoutUserstart())
+      const res=await fetch('/api/auth/signout')
+      const data=res.json();
+      if(data.success==false){
+        dispatch(SignoutUserfailure(data.message))
+        return
+      }
+      dispatch(SignoutuserSuccess(data))
+    } catch (error) {
+        dispatch(SignoutUserfailure(data.message));
+
+    }
+  };
 
   return (
     <div className="p-3 max-w-lg mx-auto">
@@ -161,8 +177,15 @@ try {
         </button>
       </form>
       <div className="flex justify-between mt-2">
-        <span className="text-red-700 cursor-pointer" onClick={handledeleteuser} >Delete Account</span>
-        <span className="text-red-700 cursor-pointer">Sign out</span>
+        <span
+          className="text-red-700 cursor-pointer"
+          onClick={handledeleteuser}
+        >
+          Delete Account
+        </span>
+        <span className="text-red-700 cursor-pointer" onClick={signoutuser}>
+          Sign out
+        </span>
       </div>
       <p className="text-red-700 mt-5">{error ? error : ""}</p>
     </div>
