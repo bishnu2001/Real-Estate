@@ -20,6 +20,7 @@ import {
   SignoutuserSuccess,
 } from "../redux/user/userSlice";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 
 const Profile = () => {
   const fileref = useRef(null);
@@ -105,17 +106,16 @@ const Profile = () => {
   };
   const signoutuser = async () => {
     try {
-      dispatch(SignoutUserstart())
-      const res=await fetch('/api/auth/signout')
-      const data=res.json();
-      if(data.success==false){
-        dispatch(SignoutUserfailure(data.message))
-        return
-      }
-      dispatch(SignoutuserSuccess(data))
-    } catch (error) {
+      dispatch(SignoutUserstart());
+      const res = await fetch("/api/auth/signout");
+      const data = res.json();
+      if (data.success == false) {
         dispatch(SignoutUserfailure(data.message));
-
+        return;
+      }
+      dispatch(SignoutuserSuccess(data));
+    } catch (error) {
+      dispatch(SignoutUserfailure(data.message));
     }
   };
 
@@ -175,6 +175,12 @@ const Profile = () => {
         >
           {loading ? "Loading" : "update"}
         </button>
+        <Link
+          to={"/createlisting"}
+          className="bg-green-700 text-white p-3 rounded-lg uppercase text-center hover:opacity-95"
+        >
+          create listing
+        </Link>
       </form>
       <div className="flex justify-between mt-2">
         <span
