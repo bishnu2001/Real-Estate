@@ -14,6 +14,7 @@ app.use('/api/user', userrouter);
 app.use('/api/auth',authrouter);
 app.use('/api/listing', listingrouter);
 
+
 app.get('/',(req,res)=>{
     res.send("server is ready");
 });
