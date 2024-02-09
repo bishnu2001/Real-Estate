@@ -34,10 +34,10 @@ module.exports.updatelisting = async (req, res) => {
         return res.status(501).json({ message: "internal server error" })
     }
 }
-module.exports.getlisting=async(req,res)=>{
+module.exports.getlisting = async (req, res) => {
     try {
-        const listing=await Listing.findById(req.params.id);
-        if(!listing){
+        const listing = await Listing.findById(req.params.id);
+        if (!listing) {
             return res.status(401).json('Listing not found')
         }
         res.status(200).json(listing);
