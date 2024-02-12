@@ -50,3 +50,15 @@ module.exports.getuserlisting = async (req, res) => {
         return res.status(501).json({ message: "you can view only your listing" })
     }
 }
+module.exports.getUser=async(req,res)=>{
+    try {
+        const user=await User.findById(req.params.id);
+        if(!user){
+            res.json('user not found')
+        }
+        const {password:pass,...rest}=user._doc;
+        res.status(201).json(rest)
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
