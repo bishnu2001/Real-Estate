@@ -10,6 +10,7 @@ import PrivateRoute from "./components/PrivateRoute";
 import Creatlisting from "./pages/Creatlisting";
 import Updatelisting from "./pages/Updatelisting";
 import Listing from "./pages/Listing";
+import Search from "./pages/Search";
 const App = () => {
   return (
     <BrowserRouter>
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<Signin />} />
         <Route path="/about" element={<About />} />
+        <Route path="/search" element={<Search />} />
         <Route path="/listing/:id" element={<Listing />} />
 
         <Route element={<PrivateRoute />}>
