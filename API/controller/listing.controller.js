@@ -66,10 +66,10 @@ module.exports.getListings = async (req,res) => {
         if (type === undefined || type === "all") {
             type = { $in: ['sale', 'rent'] };
         }
-        const SearchTerm = req.query.SearchTerm || '';
+        const SearchTerm = req.query.searchTerm || '';
         const sort = req.query.sort || "createdAt";
         const order = req.query.order || 'desc';
-
+        
         const listings = await Listing.find({
             name: { $regex: SearchTerm, $options: 'i' },
             offer,
@@ -79,10 +79,7 @@ module.exports.getListings = async (req,res) => {
         }).sort(
             {[sort]:order}
         ).limit(limit).skip(startindex);
-
-        return res.status(200).json(listings)
-
-
+        return res.status(200).json(listings);
     } catch (error) {
         res.status(500).json({error:'internal server error'})
     }
