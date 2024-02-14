@@ -260,7 +260,7 @@ const Creatlisting = () => {
             <div className="flex items-center gap-2">
               <input
                 type="number"
-                id="regularprice"
+                id="regularPrice"
                 required
                 className="p-3 border border-gray-300 rounded-lg"
                 onChange={handlechange}
@@ -331,7 +331,10 @@ const Creatlisting = () => {
                 </button>
               </div>
             ))}
-          <button disabled={loading || uploading} className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80">
+          <button
+            disabled={loading || uploading}
+            className="p-3 bg-slate-700 text-white rounded-lg uppercase hover:opacity-95 disabled:opacity-80"
+          >
             {loading ? "Creating..." : "Create listing"}
           </button>
           {error && <p className="text-red-700 text-sm">{error}</p>}
