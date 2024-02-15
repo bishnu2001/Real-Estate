@@ -9,13 +9,15 @@ const cookieparser=require("cookie-parser");
 const { connectdb } =require('./config/db');
 connectdb();
 const _dirname=path.resolve();
+
 const app = express();
 app.use(express.json());
 app.use(cookieparser());
 app.use('/api/user', userrouter);
 app.use('/api/auth',authrouter);
 app.use('/api/listing', listingrouter);
-app.use(express.static(path.join(_dirname,'/client/dist')));
+const clientBuildPath = path.join(__dirname, '../../client/dist');
+app.use(express.static(clientBuildPath));
 app.get('*',(req,res)=>{
     res.sendFile(path.join(_dirname,'client','dist','index.html'))
 })
