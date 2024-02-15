@@ -15,7 +15,6 @@ const Search = () => {
     const [loading, setLoading] = useState(false);
     const [listings, setListings] = useState([]);
     const [showMore, setShowMore] = useState(false);
-    console.log(listings)
   useEffect(() => {
     const urlparams = new URLSearchParams(location.search);
     const searchtermformurl = urlparams.get("searchTerm");
@@ -48,9 +47,15 @@ const Search = () => {
 
     const fetchlistings=async()=>{
       setLoading(true);
+      setShowMore(false);
       const searchquery=urlparams.toString();
       const res=await fetch(`/api/listing/get?${searchquery}`)
       const data=await res.json();
+      if(data.length>8){
+        setShowMore(true)
+      }else{
+        setShowMore(false)
+      }
       setListings(data);
       setLoading(false)
     }
@@ -99,6 +104,19 @@ const Search = () => {
     const searchquery = urlparams.toString();
     navigate(`/search?${searchquery}`);
   };
+  const onShowmoreclick=async()=>{
+      const numberoflistings=listings.length;
+      const startindex=numberoflistings;
+      const urlparams=new URLSearchParams(location.search);
+      urlparams.set("startindex", startindex);
+      const searchquery=urlparams.toString();
+      const res=await fetch(`/api/listing/get?${searchquery}`);
+      const data=await res.json();
+      if(data.length <9){
+        setShowMore(false);
+      }
+      setListings([...listings,...data])
+  }
   return (
     <div className="flex flex-col md:flex-row">
       <div className="p-7 border-b-2 md:border-r-2 md:min-h-screen">
@@ -217,6 +235,9 @@ const Search = () => {
           {!loading &&
             listings &&
             listings.map((listing) => <Listingitem key={listing._id} listing={listing} />)}
+            {showMore && (
+              <button onClick={onShowmoreclick} className="text-green-700 hover:underline p-7 text-center w-full" >Show more</button>
+            )}
         </div>
       </div>
     </div>
